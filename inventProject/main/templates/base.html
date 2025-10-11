@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% block title %}<title>Учет техники</title>{% endblock %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Добавление дополнительного статического CSS файла -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-2">
+          {% block sidebar %}
+            <ul class="sidebar-nav">
+              <li><a href="{% url 'main:equipment_list' %}">Home</a></li>
+            </ul>
+          {% endblock %}
+        </div>
+        <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
+      </div>
+    </div>
+  </body>
+</html>

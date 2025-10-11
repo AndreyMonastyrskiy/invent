@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Информация по оборудованию</h1>
+
+    <h1>{{equipment.name}}</h1>
+    <ul>
+      <li>{{equipment.serial_number}}</li>
+      <li>{{equipment.description}}</li>
+    </ul>
+    
+{% endblock %}

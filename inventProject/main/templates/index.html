@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Учет техники</h1>
+
+  <p>Базовый учет техники</p>
+
+<h2>Список имеющихся данных</h2>
+
+  <p>Количество различных сущностей:</p>
+  <ul>
+    <li><strong>Количество офисов:</strong> {{ num_office }}</li>
+    <li><strong>Количество типов техники:</strong> {{ num_equipment_type }}</li>
+    <li><strong>Количество статусов:</strong> {{ num_equipment_status }}</li>
+    <li><strong>Количество техники со статусом 'используется':</strong> {{ num_equipment_in_use }}</li>
+  </ul>
+
+{% endblock %}

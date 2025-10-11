@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load django_tables2 %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Оборудование</h2>
+
+    <!-- Кнопка для добавления новой записи -->
+    <a href="{% url 'main:equipment_create' %}" class="btn btn-success mb-3">Добавить оборудование</a>
+
+    <!-- Форма фильтрации -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Фильтры
+        </div>
+        <div class="card-body">
+            <form method="get">
+                <div class="row">
+                    {% for field in filter.form %}
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {% render_field field class="form-control" %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Применить фильтр</button>
+                <a href="{% url 'main:equipment_list' %}" class="btn btn-secondary">Сбросить</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Таблица -->
+    {% render_table table %}
+
+    <!-- Скрипт для работы чекбоксов (если они добавлены) -->
+    <script>
+        function toggle(source) {
+            checkboxes = document.getElementsByName('selection');
+            for(var i=0, n=checkboxes.length; i<n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    </script>
+</div>
+{% endblock %}
