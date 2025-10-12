@@ -27,14 +27,14 @@ class EquipmentStatus(models.Model):
 
 
 class Equipment(models.Model):
-    name = models.CharField(max_length=256, help_text="Название оборудования")
-    accounting_name = models.TextField(help_text="Наименование по бухгалтерии")
-    serial_number = models.CharField(max_length=256, help_text="Серийный или заводской номер")
-    inventory_number = models.CharField(max_length=256, help_text="Инвентарный номер")
-    equipment_type = models.ForeignKey('EquipmentType', on_delete=models.PROTECT, help_text="Выберите тип оборудования")
-    office = models.ForeignKey('Office', on_delete=models.PROTECT, help_text="Выберите площадку размещения оборудования")
-    status = models.ForeignKey('EquipmentStatus', on_delete=models.PROTECT, help_text="Выберите статус оборудования")
-    description = models.TextField(help_text="Описание", blank=True)
+    name = models.CharField(max_length=256, help_text="Название оборудования", verbose_name="Название оборудования")
+    accounting_name = models.TextField(help_text="Наименование по бухгалтерии", verbose_name="Наименование по бухгалтерии")
+    serial_number = models.CharField(max_length=256, help_text="Серийный или заводской номер", verbose_name="Серийный номер")
+    inventory_number = models.CharField(max_length=256, help_text="Инвентарный номер", verbose_name="Инвентарный номер")
+    equipment_type = models.ForeignKey('EquipmentType', on_delete=models.PROTECT, help_text="Выберите тип оборудования", verbose_name="Тип оборудования")
+    office = models.ForeignKey('Office', on_delete=models.PROTECT, help_text="Выберите площадку размещения оборудования", verbose_name="Площадка")
+    status = models.ForeignKey('EquipmentStatus', on_delete=models.PROTECT, help_text="Выберите статус оборудования", verbose_name="Статус")
+    description = models.TextField(help_text="Описание", blank=True, verbose_name="Описание")
 
     class Meta:
         ordering = ["name"]

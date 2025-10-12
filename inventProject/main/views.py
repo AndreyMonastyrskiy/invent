@@ -51,7 +51,7 @@ class EquipmentListView(FilterView, SingleTableView):
     table_class = EquipmentTable
     filterset_class = EquipmentFilter
     template_name = 'main/equipment_list.html'
-    paginate_by = 2 # Пагинация
+    paginate_by = 3 # Пагинация
 
     def get_queryset(self):
         # Получаем отфильтрованный queryset

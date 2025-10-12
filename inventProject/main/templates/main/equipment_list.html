@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="w-100 mt-4">
     <h2>Оборудование</h2>
 
     <!-- Кнопка для добавления новой записи -->
@@ -34,15 +34,5 @@
 
     <!-- Таблица -->
     {% render_table table %}
-
-    <!-- Скрипт для работы чекбоксов (если они добавлены) -->
-    <script>
-        function toggle(source) {
-            checkboxes = document.getElementsByName('selection');
-            for(var i=0, n=checkboxes.length; i<n; i++) {
-                checkboxes[i].checked = source.checked;
-            }
-        }
-    </script>
 </div>
 {% endblock %}

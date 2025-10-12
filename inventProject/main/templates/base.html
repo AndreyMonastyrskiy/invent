@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    {% block title %}<title>Учет техники</title>{% endblock %}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -9,22 +8,32 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}" />
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
   </head>
 
   <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-2">
-          {% block sidebar %}
-            <ul class="sidebar-nav">
-              <li><a href="{% url 'main:equipment_list' %}">Home</a></li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        {% block title %}<a class="navbar-brand" href="#">Учет техники</a>{% endblock %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'main:equipment_list' %}">Оборудование</a>
+                </li>
+                <!-- Add more menu items here -->
             </ul>
-          {% endblock %}
         </div>
-        <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
-      </div>
     </div>
+  </nav>
+  
+  <div class="container-fluid mt-5 pt-4">
+    {% block content %}{% endblock %}
+  </div>
+
   </body>
 </html>
