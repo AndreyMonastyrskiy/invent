@@ -1,3 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django_tables2 import SingleTableView
@@ -6,7 +9,7 @@ from .models import Equipment
 from .tables import EquipmentTable
 from .filters import EquipmentFilter
 from .forms import EquipmentForm
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from .models import Office, EquipmentType, EquipmentStatus, Equipment
 
@@ -45,8 +48,12 @@ def equipment_detail(request, id):
         {'equipment': equipment}
     )
 
+#def logout_handler(request):
+#    logout(request)
+#    return redirect('login')
+
 # Основное представление со списком оборудования (таблица + фильтры)
-class EquipmentListView(FilterView, SingleTableView):
+class EquipmentListView(LoginRequiredMixin, FilterView, SingleTableView):
     model = Equipment
     table_class = EquipmentTable
     filterset_class = EquipmentFilter
@@ -66,19 +73,19 @@ class EquipmentListView(FilterView, SingleTableView):
         return context
 
 # Представления для CRUD-операций
-class EquipmentCreateView(CreateView):
+class EquipmentCreateView(LoginRequiredMixin, CreateView):
     model = Equipment
     form_class = EquipmentForm
     template_name = 'main/equipment_form.html'
     success_url = reverse_lazy('main:equipment_list') # Имя URL для списка оборудования
 
-class EquipmentUpdateView(UpdateView):
+class EquipmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Equipment
     form_class = EquipmentForm
     template_name = 'main/equipment_form.html'
     success_url = reverse_lazy('main:equipment_list')
 
-class EquipmentDeleteView(DeleteView):
+class EquipmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Equipment
     template_name = 'main/equipment_confirm_delete.html'
     success_url = reverse_lazy('main:equipment_list')
