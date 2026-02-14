@@ -10,6 +10,7 @@ from .tables import EquipmentTable
 from .filters import EquipmentFilter
 from .forms import EquipmentForm
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.exceptions import PermissionDenied
 from django.views import generic
 from .models import Office, EquipmentType, EquipmentStatus, Equipment
 
@@ -48,9 +49,6 @@ def equipment_detail(request, id):
         {'equipment': equipment}
     )
 
-#def logout_handler(request):
-#    logout(request)
-#    return redirect('login')
 
 # Основное представление со списком оборудования (таблица + фильтры)
 class EquipmentListView(LoginRequiredMixin, FilterView, SingleTableView):
@@ -62,9 +60,11 @@ class EquipmentListView(LoginRequiredMixin, FilterView, SingleTableView):
 
     def get_queryset(self):
         # Получаем отфильтрованный queryset
-        qs = super().get_queryset()
+        user_offices = self.request.user.managed_offices.all()
+        qs = super().get_queryset().filter(office__in=user_offices).distinct()
         self.filterset = self.filterset_class(self.request.GET, queryset=qs)
         return self.filterset.qs
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,13 +79,41 @@ class EquipmentCreateView(LoginRequiredMixin, CreateView):
     template_name = 'main/equipment_form.html'
     success_url = reverse_lazy('main:equipment_list') # Имя URL для списка оборудования
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        user = self.request.user
+        form.fields['office'].queryset = user.managed_offices.all()
+        return form
+
+    def form_valid(self, form):
+        user = self.request.user
+        selected_office = form.cleaned_data['office']
+        if user not in selected_office.managers.all():
+            form.add_error('office', 'У вас нет прав для добавления техники в этот офис.')
+            return self.form_invalid(form)
+        return super().form_valid(form)
+
 class EquipmentUpdateView(LoginRequiredMixin, UpdateView):
     model = Equipment
     form_class = EquipmentForm
     template_name = 'main/equipment_form.html'
     success_url = reverse_lazy('main:equipment_list')
 
+    def get_queryset(self):
+        user = self.request.user
+        return Equipment.objects.filter(office__managers=user).distinct()
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        user = self.request.user
+        form.fields['office'].queryset = user.managed_offices.all()
+        return form
+
 class EquipmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Equipment
     template_name = 'main/equipment_confirm_delete.html'
     success_url = reverse_lazy('main:equipment_list')
+
+    def get_queryset(self):
+        user = self.request.user
+        return Equipment.objects.filter(office__managers=user).distinct()

@@ -19,6 +19,13 @@ class EquipmentFilter(django_filters.FilterSet):
         queryset=EquipmentStatus.objects.all(), 
         label='Статус:'
     )
+    
+    def __init__(self, *args, **kwargs):
+        request = kwargs.get('request')
+        super(EquipmentFilter, self).__init__(*args, **kwargs)
+        if request and request.user:
+            user = request.user
+            self.filters['office'].queryset = user.managed_offices.all()
 
     description = django_filters.CharFilter(lookup_expr='icontains', label='Описание:')
 

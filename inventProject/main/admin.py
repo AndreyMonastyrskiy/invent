@@ -21,3 +21,4 @@ class EquipmentTypeAdmin(admin.ModelAdmin):
 @admin.register(Office)
 class OfficeAdmin(admin.ModelAdmin):
     list_display = ('name', 'adress')
+    filter_horizontal = ('managers',)

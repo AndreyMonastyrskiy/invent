@@ -1,10 +1,12 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class Office(models.Model):
     name = models.CharField(max_length=256, help_text="Краткое название площадки")
     adress = models.TextField(help_text="Полный адрес нахождения площадки")
+    managers = models.ManyToManyField(User, related_name='managed_offices')
 
     def __str__(self):
         return self.name
