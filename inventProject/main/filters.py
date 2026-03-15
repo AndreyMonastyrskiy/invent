@@ -1,5 +1,5 @@
 import django_filters
-from .models import Equipment, EquipmentType, Office, EquipmentStatus
+from .models import Equipment, EquipmentType, Office, EquipmentStatus, Consumable, СonsumableType, Manufacturer, ModelName
 
 class EquipmentFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains', label='Название:')
@@ -39,5 +39,48 @@ class EquipmentFilter(django_filters.FilterSet):
             'equipment_type', 
             'office', 
             'status',
+            'description'
+        ]
+
+
+class ConsumableFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='icontains', label='Название:')
+    accounting_name = django_filters.CharFilter(lookup_expr='icontains', label='Наименование по бухгалтерии:')
+    
+    consumable_type = django_filters.ModelChoiceFilter(
+        queryset=СonsumableType.objects.all(), 
+        label='Тип расходника:'
+    )
+    manufacturer = django_filters.ModelChoiceFilter(
+        queryset=Manufacturer.objects.all(), 
+        label='Производитель:'
+    )
+    model = django_filters.ModelChoiceFilter(
+        queryset=ModelName.objects.all(), 
+        label='Модель:'
+    )
+    office = django_filters.ModelChoiceFilter(
+        queryset=Office.objects.all(), 
+        label='Площадка:'
+    )
+    description = django_filters.CharFilter(lookup_expr='icontains', label='Описание:')
+    
+    def __init__(self, *args, **kwargs):
+        request = kwargs.get('request')
+        super(ConsumableFilter, self).__init__(*args, **kwargs)
+        if request and request.user:
+            user = request.user
+            self.filters['office'].queryset = user.managed_offices.all()
+
+    
+    class Meta:
+        model = Consumable
+        fields = [
+            'name', 
+            'accounting_name', 
+            'consumable_type', 
+            'manufacturer', 
+            'model', 
+            'office', 
             'description'
         ]
