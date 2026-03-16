@@ -91,7 +91,7 @@ class EquipmentAdmin(ImportExportModelAdmin):
 @admin.register(Consumable)
 class СonsumableAdmin(ImportExportModelAdmin):
     resource_classes = [СonsumableResource]
-    list_display = ('name', 'accounting_name', 'consumable_type', 'manufacturer', 'model', 'office', 'in_work_date', 'warranty_date', 'count', 'description')
+    list_display = ('name', 'accounting_name', 'consumable_type', 'manufacturer', 'model', 'office', 'in_work_date', 'warranty_date', 'count', 'write_off_count', 'description')
     list_filter = ('consumable_type', 'office')
 
 @admin.register(EquipmentStatus)
