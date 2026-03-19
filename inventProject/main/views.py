@@ -13,6 +13,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import PermissionDenied
 from django.views import generic
 from .models import Office, EquipmentType, EquipmentStatus, Equipment, Consumable
+from constance import config
 
 # Create your views here.
 """
@@ -57,7 +58,11 @@ class EquipmentListView(LoginRequiredMixin, FilterView, SingleTableView):
     table_class = EquipmentTable
     filterset_class = EquipmentFilter
     template_name = 'main/equipment_list.html'
-    paginate_by = 3 # Пагинация
+    #paginate_by = config.LINES_COUNT_PER_PAGE # Пагинация
+
+    # Пагинация
+    def get_paginate_by(self, queryset):
+        return config.LINES_COUNT_PER_PAGE
 
     def get_queryset(self):
         # Получаем отфильтрованный queryset
@@ -126,7 +131,11 @@ class ConsumableListView(LoginRequiredMixin, FilterView, SingleTableView):
     table_class = ConsumableTable
     filterset_class = ConsumableFilter
     template_name = 'main/consumable_list.html'
-    paginate_by = 3 # Пагинация
+    #paginate_by = config.LINES_COUNT_PER_PAGE # Пагинация
+
+    # Пагинация
+    def get_paginate_by(self, queryset):
+        return config.LINES_COUNT_PER_PAGE
 
     def get_queryset(self):
         # Получаем отфильтрованный queryset

@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'main.apps.MainConfig',
     'import_export',
+    'constance',
+    'constance.backends.database',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +142,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/main/'
 LOGOUT_REDIRECT_URL = 'login'
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+CONSTANCE_CONFIG = {
+    'LINES_COUNT_PER_PAGE': (30, 'Кол-во строк таблицы на странице', int),
+}
