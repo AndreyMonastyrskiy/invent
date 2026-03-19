@@ -11,6 +11,10 @@ class Office(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Площадка"
+        verbose_name_plural = "Площадки"
 
 
 class EquipmentType(models.Model):
@@ -19,6 +23,10 @@ class EquipmentType(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Тип оборудования"
+        verbose_name_plural = "Типы оборудования"
 
 class СonsumableType(models.Model):
     name = models.CharField(max_length=256, help_text="Название типа расходника")
@@ -26,6 +34,10 @@ class СonsumableType(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Тип расходного материала"
+        verbose_name_plural = "Типы расходных материалов"
 
 class Manufacturer(models.Model):
     name = models.CharField(max_length=256, help_text="Производитель")
@@ -34,12 +46,20 @@ class Manufacturer(models.Model):
     def __str__(self):
         return self.name
     
+    class Meta:
+        verbose_name = "Производитель"
+        verbose_name_plural = "Производители"
+    
 class ModelName(models.Model):
     name = models.CharField(max_length=256, help_text="Модель")
     description = models.TextField(help_text="Описание", blank=True)
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Модель"
+        verbose_name_plural = "Модели"
 
 
 class EquipmentStatus(models.Model):
@@ -48,6 +68,10 @@ class EquipmentStatus(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Статус оборудования"
+        verbose_name_plural = "Статусы оборудования"
      
 
 class Equipment(models.Model):
@@ -66,6 +90,8 @@ class Equipment(models.Model):
 
     class Meta:
         ordering = ["name"]
+        verbose_name = "Оборудование"
+        verbose_name_plural = "Оборудование"
    
     def __str__(self):
         return self.name
@@ -89,6 +115,8 @@ class Consumable(models.Model):
 
     class Meta:
         ordering = ["name"]
+        verbose_name = "Расходник"
+        verbose_name_plural = "Расходники"
    
     def __str__(self):
         return self.name
