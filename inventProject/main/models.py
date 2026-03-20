@@ -111,7 +111,7 @@ class Consumable(models.Model):
     warranty_date = models.DateField(help_text="Дата окончания гарантии", blank=True, verbose_name="Дата окончания гарантии", default=date(1987,8,11))
     count = models.PositiveIntegerField(default=0, verbose_name="Количество")
     write_off_count = models.PositiveIntegerField(default=0, verbose_name="Количество списанного")
-    description = models.TextField(help_text="Описание", blank=True, verbose_name="Описание")
+    description = models.TextField(help_text="Описание", blank=True, verbose_name="Описание",null=True)
 
     class Meta:
         ordering = ["name"]
