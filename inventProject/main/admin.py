@@ -76,10 +76,19 @@ class СonsumableResource(resources.ModelResource):
         widget=DateWidget(format='%d.%m.%Y')
     )
     
-    
+
     class Meta:
         model = Consumable
 
+
+class ManufacturerResource(resources.ModelResource):
+    class Meta:
+        model = Manufacturer
+
+
+class ModelNameResource(resources.ModelResource):
+    class Meta:
+        model = ModelName
 
 # Register your models here.
 @admin.register(Equipment)
@@ -113,9 +122,20 @@ class OfficeAdmin(admin.ModelAdmin):
     filter_horizontal = ('managers',)
 
 @admin.register(Manufacturer)
+class ManufacturerAdmin(ImportExportModelAdmin):
+    resource_classes = [ManufacturerResource]
+    list_display = ('name', 'description')
+
+@admin.register(ModelName)
+class ModelNameAdmin(ImportExportModelAdmin):
+    resource_classes = [ModelNameResource]
+    list_display = ('name', 'description')
+'''
+@admin.register(Manufacturer)
 class ManufacturerAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
 
 @admin.register(ModelName)
 class ModelNameAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
+'''
