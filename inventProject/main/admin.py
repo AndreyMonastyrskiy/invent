@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Equipment, EquipmentStatus, EquipmentType, Office, Manufacturer, ModelName, СonsumableType, Consumable
+from .models import Equipment, EquipmentStatus, EquipmentType, Office, Manufacturer, ModelName, СonsumableType, Consumable, MemoryType, StorageType, OperatingSystem
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from import_export.widgets import ForeignKeyWidget, DateWidget
@@ -40,6 +40,22 @@ class EquipmentResource(resources.ModelResource):
         attribute='model',
         widget=ForeignKeyWidget(ModelName, 'name')
     )
+    memory_type = fields.Field(
+        column_name='memory_type',
+        attribute='memory_type',
+        widget=ForeignKeyWidget(MemoryType, 'name')
+    )
+    storage_type = fields.Field(
+        column_name='storage_type',
+        attribute='storage_type',
+        widget=ForeignKeyWidget(StorageType, 'name')
+    )
+    operating_system = fields.Field(
+        column_name='operating_system',
+        attribute='operating_system',
+        widget=ForeignKeyWidget(OperatingSystem, 'name')
+    )
+
     class Meta:
         model = Equipment
 
@@ -94,7 +110,7 @@ class ModelNameResource(resources.ModelResource):
 @admin.register(Equipment)
 class EquipmentAdmin(ImportExportModelAdmin):
     resource_classes = [EquipmentResource]
-    list_display = ('name', 'accounting_name', 'serial_number', 'inventory_number', 'equipment_type', 'manufacturer', 'model', 'office', 'status', 'in_work_date', 'warranty_date', 'description')
+    list_display = ('name', 'accounting_name', 'serial_number', 'inventory_number', 'equipment_type', 'manufacturer', 'model', 'office', 'room', 'status', 'in_work_date', 'warranty_date', 'additional_equipment', 'memory_type', 'memory_size', 'storage_type', 'storage_size', 'operating_system', 'description')
     list_filter = ('equipment_type', 'office', 'status')
 
 @admin.register(Consumable)
@@ -130,6 +146,18 @@ class ManufacturerAdmin(ImportExportModelAdmin):
 class ModelNameAdmin(ImportExportModelAdmin):
     resource_classes = [ModelNameResource]
     list_display = ('name', 'description')
+
+@admin.register(MemoryType)
+class MemoryTypeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+@admin.register(StorageType)
+class StorageTypeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+@admin.register(OperatingSystem)
+class OperatingSystemAdmin(admin.ModelAdmin):
+    list_display = ('name',) 
 '''
 @admin.register(Manufacturer)
 class ManufacturerAdmin(admin.ModelAdmin):

@@ -10,7 +10,7 @@ class EquipmentTable(tables.Table):
     class Meta:
         model = Equipment
         template_name = "django_tables2/bootstrap4.html" # Используйте подходящий шаблон
-        fields = ('name', 'accounting_name', 'serial_number', 'inventory_number', 'equipment_type', 'office', 'status', 'description') # Поля для отображения
+        fields = ('name', 'accounting_name', 'serial_number', 'inventory_number', 'equipment_type', 'office', 'room', 'status', 'memory_type', 'memory_size', 'storage_type', 'storage_size', 'operating_system', 'description') # Поля для отображения
         attrs = {"class": "table table-striped table-bordered"} # Стили Bootstrap
 
     def render_actions(self, record):

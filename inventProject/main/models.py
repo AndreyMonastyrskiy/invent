@@ -4,6 +4,39 @@ from django.contrib.auth.models import User
 from datetime import date
 
 
+class MemoryType(models.Model):
+    name = models.CharField(max_length=256, help_text="Тип ОЗУ")
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = "Тип ОЗУ"
+        verbose_name_plural = "Типы ОЗУ"
+
+
+class StorageType(models.Model):
+    name = models.CharField(max_length=256, help_text="Тип накопителя")
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = "Тип накопителя"
+        verbose_name_plural = "Типы накопителей"
+
+
+class OperatingSystem(models.Model):
+    name = models.CharField(max_length=256, help_text="Операционная система")
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = "Операционная система"
+        verbose_name_plural = "Операционные системы"
+
+
 class Office(models.Model):
     name = models.CharField(max_length=256, help_text="Краткое название площадки")
     adress = models.TextField(help_text="Полный адрес нахождения площадки")
@@ -83,9 +116,16 @@ class Equipment(models.Model):
     manufacturer = models.ForeignKey('Manufacturer', on_delete=models.PROTECT, help_text="Выберите производителя", verbose_name="Производитель оборудования", blank=True, null=True)
     model = models.ForeignKey('ModelName', on_delete=models.PROTECT, help_text="Выберите модель", verbose_name="Модель оборудования", blank=True, null=True)
     office = models.ForeignKey('Office', on_delete=models.PROTECT, help_text="Выберите площадку размещения оборудования", verbose_name="Площадка")
+    room = models.CharField(max_length=256, help_text="В каком помещении находится оборудование", verbose_name="Помещение", blank=True)
     status = models.ForeignKey('EquipmentStatus', on_delete=models.PROTECT, help_text="Выберите статус оборудования", verbose_name="Статус")
+    memory_type = models.ForeignKey('MemoryType', on_delete=models.PROTECT, help_text="Выберите тип ОЗУ", verbose_name="Тип ОЗУ", blank=True, null=True)
+    memory_size = models.PositiveIntegerField(default=0, verbose_name="Объем ОЗУ")
+    storage_type = models.ForeignKey('StorageType', on_delete=models.PROTECT, help_text="Выберите тип накопителя", verbose_name="Тип накопителя", blank=True, null=True)
+    storage_size = models.PositiveIntegerField(default=0, verbose_name="Объем накопителя")
+    operating_system = models.ForeignKey('OperatingSystem', on_delete=models.PROTECT, help_text="Выберите тип ОС", verbose_name="Тип ОС", blank=True, null=True)
     in_work_date = models.DateField(help_text="Дата ввода в эксплуатацию", blank=True, verbose_name="Дата ввода в эксплуатацию", default=date(1987,8,11))
     warranty_date = models.DateField(help_text="Дата окончания гарантии", blank=True, verbose_name="Дата окончания гарантии", default=date(1987,8,11))
+    additional_equipment = models.TextField(help_text="Дополнительное оборудование в комплекте", blank=True, verbose_name="Дополнительное оборудование")
     description = models.TextField(help_text="Описание", blank=True, verbose_name="Описание")
 
     class Meta:
@@ -107,7 +147,7 @@ class Consumable(models.Model):
     manufacturer = models.ForeignKey('Manufacturer', on_delete=models.PROTECT, help_text="Выберите производителя", verbose_name="Производитель расходника", blank=True, null=True)
     model = models.ForeignKey('ModelName', on_delete=models.PROTECT, help_text="Выберите модель", verbose_name="Модель расходника", blank=True, null=True)
     office = models.ForeignKey('Office', on_delete=models.PROTECT, help_text="Выберите площадку размещения расходника", verbose_name="Площадка")
-    room = models.TextField(help_text="В каком помещении находится расходник", verbose_name="Помещение", blank=True)
+    room = models.CharField(max_length=256, help_text="В каком помещении находится расходник", verbose_name="Помещение", blank=True)
     in_work_date = models.DateField(help_text="Дата ввода в эксплуатацию", blank=True, verbose_name="Дата ввода в эксплуатацию", default=date(1987,8,11))
     warranty_date = models.DateField(help_text="Дата окончания гарантии", blank=True, verbose_name="Дата окончания гарантии", default=date(1987,8,11))
     count = models.PositiveIntegerField(default=0, verbose_name="Количество")
