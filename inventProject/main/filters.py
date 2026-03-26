@@ -63,6 +63,7 @@ class ConsumableFilter(django_filters.FilterSet):
         queryset=Office.objects.all(), 
         label='Площадка:'
     )
+    room = django_filters.CharFilter(lookup_expr='icontains', label='Помещение:')
     description = django_filters.CharFilter(lookup_expr='icontains', label='Описание:')
     
     def __init__(self, *args, **kwargs):
@@ -81,6 +82,7 @@ class ConsumableFilter(django_filters.FilterSet):
             'consumable_type', 
             'manufacturer', 
             'model', 
-            'office', 
+            'office',
+            'room',
             'description'
         ]

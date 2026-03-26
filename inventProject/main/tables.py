@@ -32,7 +32,7 @@ class ConsumableTable(tables.Table):
     class Meta:
         model = Consumable
         template_name = "django_tables2/bootstrap4.html" # Используйте подходящий шаблон
-        fields = ('name', 'accounting_name', 'consumable_type', 'manufacturer', 'model', 'office', 'count', 'write_off_count', 'description') # Поля для отображения
+        fields = ('name', 'accounting_name', 'consumable_type', 'manufacturer', 'model', 'office', 'room', 'count', 'write_off_count', 'description') # Поля для отображения
         attrs = {"class": "table table-striped table-bordered"} # Стили Bootstrap
 
     def render_actions(self, record):
