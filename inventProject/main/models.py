@@ -164,3 +164,31 @@ class Consumable(models.Model):
     
     def get_absolute_url(self):
         return reverse("consumable-detail", args=[str(self.id)])
+    
+
+class WriteOff(models.Model):
+
+    class ActionType(models.TextChoices):
+        INSTALL = 'IN', 'установке'
+        UPGRADE = 'UP', 'модернизации'
+
+    consumable = models.ForeignKey('Consumable', on_delete=models.PROTECT, help_text="Выберите расходник для списания", verbose_name="Списание расходника")
+    count = models.PositiveIntegerField(default=1, verbose_name="Количество")
+    writeoff_date = models.DateField(help_text="Дата списания", verbose_name="Дата списания", default=date.today)
+    who_writeoff = models.CharField(max_length=256, help_text="Кем списывается расходник", verbose_name="Кем списывается расходник")
+    action_type = models.CharField(max_length=2, choices=ActionType.choices, default=ActionType.INSTALL)
+    which_equipment = models.CharField(max_length=256, help_text="для какого устройства", verbose_name="для какого устройства")
+    used_by = models.CharField(max_length=256, help_text="Кем используется оборудование", verbose_name="Кем используется оборудование")
+    who_made_work = models.CharField(max_length=256, help_text="Работу сдал:", verbose_name="Работу сдал:")
+    who_take_work = models.CharField(max_length=256, help_text="Работу принял(а):", verbose_name="Работу принял(а):")
+    
+    class Meta:
+        ordering = ["consumable"]
+        verbose_name = "Списание"
+        verbose_name_plural = "Списания"
+   
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse("writeoff-detail", args=[str(self.id)])
