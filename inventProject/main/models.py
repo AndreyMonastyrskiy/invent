@@ -61,7 +61,7 @@ class EquipmentType(models.Model):
         verbose_name = "Тип оборудования"
         verbose_name_plural = "Типы оборудования"
 
-class СonsumableType(models.Model):
+class ConsumableType(models.Model):
     name = models.CharField(max_length=256, help_text="Название типа расходника")
     description = models.TextField(help_text="Описание", blank=True)
 
@@ -143,7 +143,7 @@ class Equipment(models.Model):
 class Consumable(models.Model):
     name = models.CharField(max_length=256, help_text="Название расходника", verbose_name="Название расходника")
     accounting_name = models.TextField(help_text="Наименование по бухгалтерии", verbose_name="Наименование по бухгалтерии")
-    consumable_type = models.ForeignKey('СonsumableType', on_delete=models.PROTECT, help_text="Выберите тип расходника", verbose_name="Тип расходника", blank=True, null=True)
+    consumable_type = models.ForeignKey('ConsumableType', on_delete=models.PROTECT, help_text="Выберите тип расходника", verbose_name="Тип расходника", blank=True, null=True)
     manufacturer = models.ForeignKey('Manufacturer', on_delete=models.PROTECT, help_text="Выберите производителя", verbose_name="Производитель расходника", blank=True, null=True)
     model = models.ForeignKey('ModelName', on_delete=models.PROTECT, help_text="Выберите модель", verbose_name="Модель расходника", blank=True, null=True)
     office = models.ForeignKey('Office', on_delete=models.PROTECT, help_text="Выберите площадку размещения расходника", verbose_name="Площадка")

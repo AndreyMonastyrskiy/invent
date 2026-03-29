@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Equipment, EquipmentStatus, EquipmentType, Office, Manufacturer, ModelName, СonsumableType, Consumable, MemoryType, StorageType, OperatingSystem
+from .models import Equipment, EquipmentStatus, EquipmentType, Office, Manufacturer, ModelName, ConsumableType, Consumable, MemoryType, StorageType, OperatingSystem
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from import_export.widgets import ForeignKeyWidget, DateWidget
@@ -64,7 +64,7 @@ class СonsumableResource(resources.ModelResource):
     consumable_type = fields.Field(
         column_name='consumable_type',
         attribute='consumable_type',
-        widget=ForeignKeyWidget(СonsumableType, 'name')
+        widget=ForeignKeyWidget(ConsumableType, 'name')
     )
     manufacturer = fields.Field(
         column_name='manufacturer',
@@ -128,8 +128,8 @@ class EquipmentStatusAdmin(admin.ModelAdmin):
 class EquipmentTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
 
-@admin.register(СonsumableType)
-class СonsumableTypeAdmin(admin.ModelAdmin):
+@admin.register(ConsumableType)
+class ConsumableTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
 
 @admin.register(Office)

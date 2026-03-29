@@ -1,5 +1,5 @@
 import django_filters
-from .models import Equipment, EquipmentType, Office, EquipmentStatus, Consumable, СonsumableType, Manufacturer, ModelName, MemoryType, StorageType, OperatingSystem
+from .models import Equipment, EquipmentType, Office, EquipmentStatus, Consumable, ConsumableType, Manufacturer, ModelName, MemoryType, StorageType, OperatingSystem
 
 class EquipmentFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains', label='Название:')
@@ -63,7 +63,7 @@ class ConsumableFilter(django_filters.FilterSet):
     accounting_name = django_filters.CharFilter(lookup_expr='icontains', label='Наименование по бухгалтерии:')
     
     consumable_type = django_filters.ModelChoiceFilter(
-        queryset=СonsumableType.objects.all(), 
+        queryset=ConsumableType.objects.all(), 
         label='Тип расходника:'
     )
     manufacturer = django_filters.ModelChoiceFilter(
