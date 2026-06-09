@@ -143,6 +143,7 @@ class Equipment(models.Model):
 class Consumable(models.Model):
     name = models.CharField(max_length=256, help_text="Название расходника", verbose_name="Название расходника")
     accounting_name = models.TextField(help_text="Наименование по бухгалтерии", verbose_name="Наименование по бухгалтерии")
+    nomenclature = models.CharField(max_length=256, help_text="Номенклатура", verbose_name="Номенклатура", default="")
     consumable_type = models.ForeignKey('ConsumableType', on_delete=models.PROTECT, help_text="Выберите тип расходника", verbose_name="Тип расходника", blank=True, null=True)
     manufacturer = models.ForeignKey('Manufacturer', on_delete=models.PROTECT, help_text="Выберите производителя", verbose_name="Производитель расходника", blank=True, null=True)
     model = models.ForeignKey('ModelName', on_delete=models.PROTECT, help_text="Выберите модель", verbose_name="Модель расходника", blank=True, null=True)
@@ -151,6 +152,7 @@ class Consumable(models.Model):
     in_work_date = models.DateField(help_text="Дата ввода в эксплуатацию", blank=True, verbose_name="Дата ввода в эксплуатацию", default=date(1987,8,11))
     warranty_date = models.DateField(help_text="Дата окончания гарантии", blank=True, verbose_name="Дата окончания гарантии", default=date(1987,8,11))
     count = models.PositiveIntegerField(default=0, verbose_name="Количество")
+    real_count = models.PositiveIntegerField(default=0, verbose_name="Фактическое количество")
     write_off_count = models.PositiveIntegerField(default=0, verbose_name="Количество списанного")
     description = models.TextField(help_text="Описание", blank=True, verbose_name="Описание",null=True)
 

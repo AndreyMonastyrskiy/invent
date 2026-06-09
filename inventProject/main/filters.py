@@ -61,6 +61,7 @@ class EquipmentFilter(django_filters.FilterSet):
 class ConsumableFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(lookup_expr='icontains', label='Название:')
     accounting_name = django_filters.CharFilter(lookup_expr='icontains', label='Наименование по бухгалтерии:')
+    nomenclature = django_filters.CharFilter(lookup_expr='icontains', label='Номенклатура:')
     
     consumable_type = django_filters.ModelChoiceFilter(
         queryset=ConsumableType.objects.all(), 
@@ -94,6 +95,7 @@ class ConsumableFilter(django_filters.FilterSet):
         fields = [
             'name', 
             'accounting_name', 
+            'nomenclature', 
             'consumable_type', 
             'manufacturer', 
             'model', 
