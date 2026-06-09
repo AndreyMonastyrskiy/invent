@@ -13,6 +13,7 @@ class MemoryType(models.Model):
     class Meta:
         verbose_name = "Тип ОЗУ"
         verbose_name_plural = "Типы ОЗУ"
+        ordering = ["name"]
 
 
 class StorageType(models.Model):
@@ -24,6 +25,7 @@ class StorageType(models.Model):
     class Meta:
         verbose_name = "Тип накопителя"
         verbose_name_plural = "Типы накопителей"
+        ordering = ["name"]
 
 
 class OperatingSystem(models.Model):
@@ -35,6 +37,7 @@ class OperatingSystem(models.Model):
     class Meta:
         verbose_name = "Операционная система"
         verbose_name_plural = "Операционные системы"
+        ordering = ["name"]
 
 
 class Office(models.Model):
@@ -48,6 +51,7 @@ class Office(models.Model):
     class Meta:
         verbose_name = "Площадка"
         verbose_name_plural = "Площадки"
+        ordering = ["name"]
 
 
 class EquipmentType(models.Model):
@@ -60,6 +64,7 @@ class EquipmentType(models.Model):
     class Meta:
         verbose_name = "Тип оборудования"
         verbose_name_plural = "Типы оборудования"
+        ordering = ["name"]
 
 class ConsumableType(models.Model):
     name = models.CharField(max_length=256, help_text="Название типа расходника")
@@ -71,6 +76,7 @@ class ConsumableType(models.Model):
     class Meta:
         verbose_name = "Тип расходного материала"
         verbose_name_plural = "Типы расходных материалов"
+        ordering = ["name"]
 
 class Manufacturer(models.Model):
     name = models.CharField(max_length=256, help_text="Производитель")
@@ -82,6 +88,7 @@ class Manufacturer(models.Model):
     class Meta:
         verbose_name = "Производитель"
         verbose_name_plural = "Производители"
+        ordering = ["name"]
     
 class ModelName(models.Model):
     name = models.CharField(max_length=256, help_text="Модель")
@@ -93,6 +100,7 @@ class ModelName(models.Model):
     class Meta:
         verbose_name = "Модель"
         verbose_name_plural = "Модели"
+        ordering = ["name"]
 
 
 class EquipmentStatus(models.Model):
@@ -105,6 +113,7 @@ class EquipmentStatus(models.Model):
     class Meta:
         verbose_name = "Статус оборудования"
         verbose_name_plural = "Статусы оборудования"
+        ordering = ["name"]
      
 
 class Equipment(models.Model):
