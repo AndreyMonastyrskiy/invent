@@ -9,6 +9,7 @@ from .models import Equipment, Consumable
 from .tables import EquipmentTable, ConsumableTable
 from .filters import EquipmentFilter, ConsumableFilter
 from .forms import EquipmentForm, ConsumableForm
+from .mixins import FilterPersistenceMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import PermissionDenied
 from django.views import generic
@@ -53,11 +54,13 @@ def equipment_detail(request, id):
 """
 
 # Основное представление со списком оборудования (таблица + фильтры)
-class EquipmentListView(LoginRequiredMixin, FilterView, SingleTableView):
+
+class EquipmentListView(LoginRequiredMixin, FilterPersistenceMixin, FilterView, SingleTableView):
     model = Equipment
     table_class = EquipmentTable
     filterset_class = EquipmentFilter
     template_name = 'main/equipment_list.html'
+    filter_session_key = 'equipment_filters'
     #paginate_by = config.LINES_COUNT_PER_PAGE # Пагинация
 
     # Пагинация
@@ -79,11 +82,12 @@ class EquipmentListView(LoginRequiredMixin, FilterView, SingleTableView):
         return context
 
 # Представления для CRUD-операций
-class EquipmentCreateView(LoginRequiredMixin, CreateView):
+class EquipmentCreateView(LoginRequiredMixin, FilterPersistenceMixin, CreateView):
     model = Equipment
     form_class = EquipmentForm
     template_name = 'main/equipment_form.html'
-    success_url = reverse_lazy('main:equipment_list') # Имя URL для списка оборудования
+    success_url = reverse_lazy('main:equipment_list')
+    filter_session_key = 'equipment_filters'
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -99,11 +103,12 @@ class EquipmentCreateView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
         return super().form_valid(form)
 
-class EquipmentUpdateView(LoginRequiredMixin, UpdateView):
+class EquipmentUpdateView(LoginRequiredMixin, FilterPersistenceMixin, UpdateView):
     model = Equipment
     form_class = EquipmentForm
     template_name = 'main/equipment_form.html'
     success_url = reverse_lazy('main:equipment_list')
+    filter_session_key = 'equipment_filters'
 
     def get_queryset(self):
         user = self.request.user
@@ -115,10 +120,11 @@ class EquipmentUpdateView(LoginRequiredMixin, UpdateView):
         form.fields['office'].queryset = user.managed_offices.all()
         return form
 
-class EquipmentDeleteView(LoginRequiredMixin, DeleteView):
+class EquipmentDeleteView(LoginRequiredMixin, FilterPersistenceMixin, DeleteView):
     model = Equipment
     template_name = 'main/equipment_confirm_delete.html'
     success_url = reverse_lazy('main:equipment_list')
+    filter_session_key = 'equipment_filters'
 
     def get_queryset(self):
         user = self.request.user
@@ -126,11 +132,12 @@ class EquipmentDeleteView(LoginRequiredMixin, DeleteView):
     
 
 # Представления для рассходников
-class ConsumableListView(LoginRequiredMixin, FilterView, SingleTableView):
+class ConsumableListView(LoginRequiredMixin, FilterPersistenceMixin, FilterView, SingleTableView):
     model = Consumable
     table_class = ConsumableTable
     filterset_class = ConsumableFilter
     template_name = 'main/consumable_list.html'
+    filter_session_key = 'consumable_filters'
     #paginate_by = config.LINES_COUNT_PER_PAGE # Пагинация
 
     # Пагинация
@@ -152,11 +159,12 @@ class ConsumableListView(LoginRequiredMixin, FilterView, SingleTableView):
         return context
 
 # Представления для CRUD-операций
-class ConsumableCreateView(LoginRequiredMixin, CreateView):
+class ConsumableCreateView(LoginRequiredMixin, FilterPersistenceMixin, CreateView):
     model = Consumable
     form_class = ConsumableForm
     template_name = 'main/consumable_form.html'
-    success_url = reverse_lazy('main:consumable_list') # Имя URL для списка оборудования
+    success_url = reverse_lazy('main:consumable_list')
+    filter_session_key = 'consumable_filters'
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -172,11 +180,12 @@ class ConsumableCreateView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
         return super().form_valid(form)
 
-class ConsumableUpdateView(LoginRequiredMixin, UpdateView):
+class ConsumableUpdateView(LoginRequiredMixin, FilterPersistenceMixin, UpdateView):
     model = Consumable
     form_class = ConsumableForm
     template_name = 'main/consumable_form.html'
     success_url = reverse_lazy('main:consumable_list')
+    filter_session_key = 'consumable_filters'
 
     def get_queryset(self):
         user = self.request.user
@@ -188,10 +197,11 @@ class ConsumableUpdateView(LoginRequiredMixin, UpdateView):
         form.fields['office'].queryset = user.managed_offices.all()
         return form
 
-class ConsumableDeleteView(LoginRequiredMixin, DeleteView):
+class ConsumableDeleteView(LoginRequiredMixin, FilterPersistenceMixin, DeleteView):
     model = Consumable
     template_name = 'main/consumable_confirm_delete.html'
     success_url = reverse_lazy('main:consumable_list')
+    filter_session_key = 'consumable_filters'
 
     def get_queryset(self):
         user = self.request.user
