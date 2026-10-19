@@ -147,3 +147,6 @@ CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 CONSTANCE_CONFIG = {
     'LINES_COUNT_PER_PAGE': (30, 'Кол-во строк таблицы на странице', int),
 }
+# Каталог, куда будут складываться XML-файлы от источника.
+# Можно переопределить переменной окружения XML_IMPORT_DIR.
+XML_IMPORT_DIR = os.environ.get('XML_IMPORT_DIR', '/home/administrator/Pro/Python/xml_incoming_data',)

@@ -203,3 +203,95 @@ class WriteOff(models.Model):
     
     def get_absolute_url(self):
         return reverse("writeoff-detail", args=[str(self.id)])
+
+
+class Organization(models.Model):
+    """Организационная единица (отдел/управление). Приходит из *org*.xml."""
+    external_id = models.CharField(
+        max_length=128, unique=True,
+        help_text="Идентификатор из XML (id)", verbose_name="Внешний ID",
+    )
+    name = models.CharField(
+        max_length=256, help_text="Краткое наименование", verbose_name="Наименование",
+    )
+    full_name = models.CharField(
+        max_length=512, blank=True, help_text="Полное наименование", verbose_name="Полное наименование",
+    )
+    parent = models.ForeignKey(
+        'self', null=True, blank=True, on_delete=models.SET_NULL,
+        related_name='children', verbose_name="Родительская орг. единица",
+    )
+    is_root = models.BooleanField(
+        default=False, verbose_name="Корневая организация",
+        help_text="1 — верхний уровень, 0 — есть родитель",
+    )
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
+
+    class Meta:
+        verbose_name = "Орг. единица"
+        verbose_name_plural = "Орг. единицы"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
+class Post(models.Model):
+    """Должность. Приходит из *post*.xml."""
+    external_id = models.CharField(
+        max_length=128, unique=True,
+        help_text="Идентификатор из XML (id)", verbose_name="Внешний ID",
+    )
+    name = models.CharField(
+        max_length=256, help_text="Наименование должности", verbose_name="Наименование",
+    )
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
+
+    class Meta:
+        verbose_name = "Должность"
+        verbose_name_plural = "Должности"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
+class Employee(models.Model):
+    """Сотрудник. Приходит из *employee*.xml."""
+    external_id = models.CharField(
+        max_length=128, unique=True,
+        help_text="Идентификатор из XML (id). По нему ищем запись для обновления.",
+        verbose_name="Внешний ID",
+    )
+    tab_id = models.CharField(
+        max_length=64, blank=True, verbose_name="Табельный номер",
+    )
+    lastname = models.CharField(max_length=128, verbose_name="Фамилия")
+    firstname = models.CharField(max_length=128, verbose_name="Имя")
+    middlename = models.CharField(max_length=128, blank=True, verbose_name="Отчество")
+    date_of_birth = models.DateField(null=True, blank=True, verbose_name="Дата рождения")
+    section = models.ForeignKey(
+        Organization, null=True, blank=True, on_delete=models.SET_NULL,
+        related_name='employees', verbose_name="Орг. единица",
+    )
+    position = models.ForeignKey(
+        Post, null=True, blank=True, on_delete=models.SET_NULL,
+        related_name='employees', verbose_name="Должность",
+    )
+    state = models.CharField(max_length=64, blank=True, verbose_name="Состояние")
+    feature = models.CharField(max_length=128, blank=True, verbose_name="Признак назначения")
+    start_date = models.DateField(null=True, blank=True, verbose_name="Дата начала работы")
+    fire_date = models.DateField(null=True, blank=True, verbose_name="Дата увольнения")
+    vacation_start = models.DateField(null=True, blank=True, verbose_name="Начало отпуска")
+    vacation_end = models.DateField(null=True, blank=True, verbose_name="Окончание отпуска")
+    gender = models.CharField(max_length=16, blank=True, verbose_name="Пол")
+    office_location = models.TextField(blank=True, verbose_name="Местоположение офиса")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
+
+    class Meta:
+        verbose_name = "Сотрудник"
+        verbose_name_plural = "Сотрудники"
+        ordering = ["lastname", "firstname"]
+
+    def __str__(self):
+        return f"{self.lastname} {self.firstname} ({self.external_id})"

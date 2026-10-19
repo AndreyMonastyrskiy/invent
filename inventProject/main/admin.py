@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Equipment, EquipmentStatus, EquipmentType, Office, Manufacturer, ModelName, ConsumableType, Consumable, MemoryType, StorageType, OperatingSystem
+from .models import Equipment, EquipmentStatus, EquipmentType, Office, Manufacturer, ModelName, ConsumableType, Consumable, MemoryType, StorageType, OperatingSystem, Organization, Post, Employee
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from import_export.widgets import ForeignKeyWidget, DateWidget
@@ -158,12 +158,28 @@ class StorageTypeAdmin(admin.ModelAdmin):
 @admin.register(OperatingSystem)
 class OperatingSystemAdmin(admin.ModelAdmin):
     list_display = ('name',) 
-'''
-@admin.register(Manufacturer)
-class ManufacturerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
 
-@admin.register(ModelName)
-class ModelNameAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
-'''
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = ('external_id', 'name', 'full_name', 'parent', 'is_root', 'updated_at')
+    list_filter = ('is_root',)
+    search_fields = ('external_id', 'name', 'full_name')
+    autocomplete_fields = ('parent',)
+
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('external_id', 'name', 'updated_at')
+    search_fields = ('external_id', 'name')
+
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = (
+        'external_id', 'tab_id', 'lastname', 'firstname', 'middlename',
+        'section', 'position', 'state', 'fire_date',
+    )
+    list_filter = ('state', 'section', 'position', 'gender')
+    search_fields = ('external_id', 'tab_id', 'lastname', 'firstname', 'middlename')
+    autocomplete_fields = ('section', 'position')
+    readonly_fields = ('updated_at',)
